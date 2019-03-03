@@ -1,4 +1,3 @@
-import { throws } from "assert";
 
 export default class SwapiService {
 

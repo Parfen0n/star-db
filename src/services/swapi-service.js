@@ -1,3 +1,5 @@
+import { throws } from "assert";
+
 export default class SwapiService {
 
   _apiBase = 'https://swapi.co/api';
@@ -34,11 +36,11 @@ export default class SwapiService {
 
   async getAllStarships() {
     const res = await this.getResource(`/starships/`);
-    return res.results.map(this._transformStarship);
+    return res.map(this._transformStarship);
   }
 
   async getStarship(id) {
-    const starship = this.getResource(`/starships/${id}/`);
+    const starship = await this.getResource(`/starships/${id}/`);
     return this._transformStarship(starship);
   }
 
@@ -50,11 +52,11 @@ export default class SwapiService {
   _transformPlanet(planet) {
     return {
       id: this._extractId(planet),
-      name: planet.name,
       population: planet.population,
-      rotationPeriod: planet.rotation_period,
-      diameter: planet.diameter
-    };
+      name: planet.name,
+      diameter: planet.diameter,
+      rotationPeriod: planet.rotation_period
+    }
   }
 
   _transformStarship(starship) {
@@ -62,7 +64,7 @@ export default class SwapiService {
       id: this._extractId(starship),
       name: starship.name,
       model: starship.model,
-      manufacturer: starship.manufacturer,
+      manufacterer: starship.manufacterer,
       costInCredits: starship.costInCredits,
       length: starship.length,
       crew: starship.crew,
@@ -81,3 +83,4 @@ export default class SwapiService {
     }
   }
 }
+
